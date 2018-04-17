@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SECCommunication", "SECComm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SECCommunication.UnitTests", "SECCommunication.UnitTests\SECCommunication.UnitTests.csproj", "{55BCCE65-9C81-4166-9C69-E554A68F26A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SECCommunication.IntegrationTests", "SECCommunication.IntegrationTests\SECCommunication.IntegrationTests.csproj", "{930F4E74-08FE-45F0-8CC3-9D5467F52852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{55BCCE65-9C81-4166-9C69-E554A68F26A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55BCCE65-9C81-4166-9C69-E554A68F26A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55BCCE65-9C81-4166-9C69-E554A68F26A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{930F4E74-08FE-45F0-8CC3-9D5467F52852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{930F4E74-08FE-45F0-8CC3-9D5467F52852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{930F4E74-08FE-45F0-8CC3-9D5467F52852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{930F4E74-08FE-45F0-8CC3-9D5467F52852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

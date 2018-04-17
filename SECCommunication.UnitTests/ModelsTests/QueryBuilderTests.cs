@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
+using SECCommunication.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SECCommunication.UnitTests
+namespace SECCommunication.UnitTests.ModelsTests
 {
     [TestFixture]
     public class QueryBuilderTests

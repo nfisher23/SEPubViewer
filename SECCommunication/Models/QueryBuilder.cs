@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SECCommunication
+namespace SECCommunication.Models
 {
     public class QueryBuilder
     {
@@ -31,7 +31,7 @@ namespace SECCommunication
 
         public void AddQuery(string key, string value)
         {
-            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(key) || value == null)
                 return;
 
             if (KeyValuePairs.ContainsKey(key))
