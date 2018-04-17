@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Implementations\HAPEdgarRetrieval.cs" />
     <Compile Include="Interfaces\IEdgarRetrieval.cs" />
+    <Compile Include="Models\SECFilingDetails.cs" />
+    <Compile Include="Models\SECSingleFileLink.cs" />
     <Compile Include="Models\TickerLandingPage.cs" />
     <Compile Include="Models\TopLevelFiling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

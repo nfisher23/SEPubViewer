@@ -28,18 +28,20 @@ namespace SECCommunication.IntegrationTests
             query.AddQuery("count", "40");
 
             LandingPage = edgarRetrieval.GetTickerLandingPage(query);
+
         }
 
         // these tests take longer, so it's in our interest to make them 
         // go faster rather than make them easier to dissect.
 
         // Note that these tests are confirming what an external source is providing us with.
-        // As such, truly random failings would most likely mean the external resource has changed, and
-        // probably isn't a bug in the code (in that case)
+        // As such, truly random failings would most likely mean the external resource has changed,
+        // and probably isn't a bug in the code (in that case)
         [Test]
         public void CollectionOfIntegrationTests()
         {
             EnsureFilingsExist();
+            EnsureSublinksWorkOut();
         }
 
         [TearDown]
@@ -60,6 +62,16 @@ namespace SECCommunication.IntegrationTests
                 Assert.AreNotEqual(filing.FilmNumber, 0);
                 Assert.IsNotNull(filing.LinkToDocs);
             }
+        }
+
+        private void EnsureSublinksWorkOut()
+        {
+            var firstSubPages = edgarRetrieval.GetSubmissionDetails(LandingPage.Filings.First());
+
+            Assert.IsNotNull(firstSubPages);
+            Assert.AreEqual(firstSubPages.AllLinks.Count(), 7);
+            Assert.AreEqual(firstSubPages.NumberOfDocuments, 6); // set by page, not parsed
+            Assert.AreEqual(firstSubPages.TimeAccepted.Date, new DateTime(2018, 3, 7));
         }
     }
 }

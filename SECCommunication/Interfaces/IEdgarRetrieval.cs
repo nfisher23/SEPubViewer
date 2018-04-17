@@ -10,5 +10,6 @@ namespace SECCommunication.Interfaces
     public interface IEdgarRetrieval
     {
         TickerLandingPage GetTickerLandingPage(QueryBuilder query);
+        SECFilingDetails GetSubmissionDetails(TopLevelFiling filing);
     }
 }
