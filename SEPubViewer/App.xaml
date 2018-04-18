@@ -4,6 +4,9 @@
              xmlns:local="clr-namespace:SEPubViewer"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <LinearGradientBrush x:Key="appBackground">
+            <GradientStop Color="#9D96AA" Offset="0" />
+            <GradientStop Color="#CBC7D1" Offset="1" />
+        </LinearGradientBrush>
     </Application.Resources>
 </Application>

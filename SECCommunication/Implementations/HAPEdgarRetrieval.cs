@@ -39,29 +39,36 @@ namespace SECCommunication.Implementations
             return dets;
         }
 
-        private IEnumerable<TopLevelFiling> GetFilingsFromLandingPage(HtmlDocument doc)
+        private List<TopLevelFiling> GetFilingsFromLandingPage(HtmlDocument doc)
         {
             var rows = doc.DocumentNode.SelectNodes("//tr");
+            List<TopLevelFiling> filings = new List<TopLevelFiling>();
             foreach (var row in rows)
             {
                 var data = row.SelectNodes("td");
+                if (data == null || data.Count == 0)
+                    continue;
+
                 TopLevelFiling filing = null;
-                try
-                {
+
+
+                try {
                     filing = new TopLevelFiling
                     {
                         FilingName = data[0].InnerText,
                         LinkToDocs = new Uri(SECBaseLink + data[1].FirstChild.Attributes["href"].Value),
-                        Description = data[2].InnerText,
-                        FilingDate = DateTime.ParseExact(data[3].InnerText, "yyyy-MM-dd", null),
-                        FileNumber = data[4].FirstChild.InnerText,
-                        FilmNumber = Convert.ToInt64(data[4].ChildNodes.Last().InnerText)
                     };
-                }
-                catch { }
+                } catch { }
+
+                try {
+                    filing.Description = data[2].InnerText;
+                    filing.FilingDate = DateTime.ParseExact(data[3].InnerText, "yyyy-MM-dd", null);
+                } catch { }
+
                 if (filing != null)
-                    yield return filing;
+                    filings.Add(filing);
             }
+            return filings;
         }
 
         private DateTime? TryGetDateTimeAccepted(HtmlDocument doc)

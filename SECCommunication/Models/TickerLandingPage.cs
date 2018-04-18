@@ -8,7 +8,7 @@ namespace SECCommunication.Models
 {
     public class TickerLandingPage
     {
-        public IEnumerable<TopLevelFiling> Filings { get; set; }
+        public List<TopLevelFiling> Filings { get; set; }
         public QueryBuilder Query { get; set; }
 
         public DateTime LastDateOnPage { get; set; }

@@ -69,6 +69,7 @@ namespace SECCommunication.IntegrationTests
             var firstSubPages = edgarRetrieval.GetSubmissionDetails(LandingPage.Filings.First());
 
             Assert.IsNotNull(firstSubPages);
+            Assert.AreEqual(firstSubPages.AllLinks.First().Description, "FORM SD");
             Assert.AreEqual(firstSubPages.AllLinks.Count(), 7);
             Assert.AreEqual(firstSubPages.NumberOfDocuments, 6); // set by page, not parsed
             Assert.AreEqual(firstSubPages.TimeAccepted.Date, new DateTime(2018, 3, 7));
