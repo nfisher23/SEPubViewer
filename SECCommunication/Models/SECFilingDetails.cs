@@ -8,7 +8,14 @@ namespace SECCommunication.Models
 {
     public class SECFilingDetails
     {
-        public IEnumerable<SECSingleFileLink> AllLinks { get; set; }
+        public List<SECSingleFileLink> AllLinks { get; set; }
+        public List<SECSingleFileLink> HTMLLinks {
+            get {
+                return AllLinks.Where(l => l.FileLink.AbsoluteUri.EndsWith(".htm")
+                    || l.FileLink.AbsoluteUri.EndsWith(".html")
+                    || l.FileLink.AbsoluteUri.EndsWith(".txt")).ToList();
+            }
+        }
         public DateTime TimeAccepted { get; set; }
         public int NumberOfDocuments { get; set; }
     }

@@ -60,7 +60,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\DIResolver.cs" />
-    <Compile Include="Models\TopLevelFilingWithTitle.cs" />
     <Compile Include="ViewModels\SearchByTickerViewModel.cs" />
     <Compile Include="Views\SearchByTicker.xaml.cs">
       <DependentUpon>SearchByTicker.xaml</DependentUpon>

@@ -15,5 +15,12 @@ namespace SECCommunication.Models
 
         public string FileNumber { get; set; }
         public Int64 FilmNumber { get; set; }
+
+        ///<summary>For use in a GUI context, basically. Makes things faster</summary>
+        public string DisplayEssentials {
+            get {
+                return $"({FilingDate.ToShortDateString()}) - {FilingName}";
+            }
+        }
     }
 }

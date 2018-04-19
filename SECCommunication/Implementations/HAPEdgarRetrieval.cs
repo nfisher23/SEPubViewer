@@ -46,7 +46,7 @@ namespace SECCommunication.Implementations
             foreach (var row in rows)
             {
                 var data = row.SelectNodes("td");
-                if (data == null || data.Count == 0)
+                if (data == null || data.Count < 2)
                     continue;
 
                 TopLevelFiling filing = null;
@@ -97,9 +97,10 @@ namespace SECCommunication.Implementations
             return numDocs;
         }
 
-        private IEnumerable<SECSingleFileLink> GetFilingDetailsLinks(HtmlDocument doc)
+        private List<SECSingleFileLink> GetFilingDetailsLinks(HtmlDocument doc)
         {
             var tables = doc.DocumentNode.Descendants("table");
+            List<SECSingleFileLink> links = new List<SECSingleFileLink>();
             foreach (var table in tables)
             {
                 var rows = table.Descendants("tr");
@@ -125,9 +126,10 @@ namespace SECCommunication.Implementations
                         // for debugging
                     }
                     if (link != null)
-                        yield return link;
+                        links.Add(link);
                 }
             }
+            return links;
         }
     }
 }

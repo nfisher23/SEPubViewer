@@ -8,6 +8,5 @@
         Title="SEPubViewer" Height="650" Width="900">
     <Grid Margin="4">
         <Frame Source="/Views/SearchByTicker.xaml" />
-
     </Grid>
 </Window>

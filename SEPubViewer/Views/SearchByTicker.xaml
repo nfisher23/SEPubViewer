@@ -39,13 +39,27 @@
         </Border>
         <Grid Grid.Row="1" Grid.Column="0" Margin="5">
             <ListBox Name="listBoxTopLevelTickers" ItemsSource="{Binding Filings}"
-                     DisplayMemberPath="DisplayTitle"
-                     Margin="0,25,0,170">
+                     DisplayMemberPath="DisplayEssentials" SelectedItem="{Binding SelectedFiling}"
+                     Margin="0,25,0,148">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged" 
+                                    SourceName="listBoxTopLevelTickers">
+                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="GetDocsInReport" />
 
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </ListBox>
+            <ListBox Name="listBoxDocsInReport" ItemsSource="{Binding DocLinks}"
+                     SelectedItem="{Binding SelectedDoc}"
+                     DisplayMemberPath="DocumentTitle" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                     Height="117"
+                     Margin="0" Width="176"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"
                        TextAlignment="Center" FontSize="18"
                        Text="Filings" VerticalAlignment="Top" Height="26" Width="176"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"
+                TextAlignment="Center" FontSize="18"
+                Text="Docs In Selected" VerticalAlignment="Bottom" Height="26" Width="176" Margin="0,0,0,117"/>
         </Grid>
     </Grid>
 </Page>

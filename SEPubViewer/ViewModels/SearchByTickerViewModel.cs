@@ -28,15 +28,51 @@ namespace SEPubViewer.ViewModels
             }
         }
 
-        private List<TopLevelFilingWithTitle> filings;
+        private List<TopLevelFiling> filings;
 
-        public List<TopLevelFilingWithTitle> Filings
+        public List<TopLevelFiling> Filings
         {
             get { return filings; }
             set
             {
                 filings = value;
                 OnPropertyChanged("Filings");
+            }
+        }
+
+        private TopLevelFiling selectedFiling;
+
+        public TopLevelFiling SelectedFiling
+        {
+            get { return selectedFiling; }
+            set
+            {
+                selectedFiling = value;
+                OnPropertyChanged("SelectedFiling");
+            }
+        }
+
+        private SECSingleFileLink selectedDoc;
+
+        public SECSingleFileLink SelectedDoc
+        {
+            get { return selectedDoc; }
+            set
+            {
+                selectedDoc = value;
+                OnPropertyChanged("SelectedDoc");
+            }
+        }
+
+        private List<SECSingleFileLink> docLinks;
+
+        public List<SECSingleFileLink> DocLinks
+        {
+            get { return docLinks; }
+            set
+            {
+                docLinks = value;
+                OnPropertyChanged("DocLinks");
             }
         }
 
@@ -57,23 +93,27 @@ namespace SEPubViewer.ViewModels
         {
             await Task.Factory.StartNew(() =>
             {
-                Filings = new List<TopLevelFilingWithTitle>();
                 QueryBuilder query = new QueryBuilder();
                 query.AddQuery("action", "getcompany");
                 query.AddQuery("CIK", Ticker);
 
                 var page = edgarRetrieval.GetTickerLandingPage(query);
-                foreach (var f in page.Filings)
-                    Filings.Add(GetChild(f));
-
+                Filings = page.Filings;
             });
         }
 
-        ///<summary>Convert TopLevelFiling into child element</summary>
-        private TopLevelFilingWithTitle GetChild(TopLevelFiling filing)
+        public async void GetDocsInReport()
         {
-            var parent = JsonConvert.SerializeObject(filing);
-            return JsonConvert.DeserializeObject<TopLevelFilingWithTitle>(parent);
+            await Task.Factory.StartNew(() =>
+            {
+                var dets = edgarRetrieval.GetSubmissionDetails(SelectedFiling);
+                DocLinks = dets.HTMLLinks;
+                if (DocLinks.Count > 0)
+                {
+                    var maxVal = dets.HTMLLinks.Max(l => l.Size);
+                    SelectedDoc = dets.HTMLLinks.Where(l => l.Size == maxVal).FirstOrDefault();
+                }
+            });
         }
     }
 }
