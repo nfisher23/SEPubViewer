@@ -65,6 +65,14 @@ namespace SECCommunication.Implementations
                     filing.FilingDate = DateTime.ParseExact(data[3].InnerText, "yyyy-MM-dd", null);
                 } catch { }
 
+                try
+                {
+                    filing.FileNumber = data[4].FirstChild.InnerText;
+                    long val = 0;
+                    Int64.TryParse(data[4].ChildNodes.Last().InnerText, out val);
+                    filing.FilmNumber = val;
+                } catch { }
+
                 if (filing != null)
                     filings.Add(filing);
             }
@@ -117,14 +125,18 @@ namespace SECCommunication.Implementations
                             Seq = seq,
                             Description = data[1].InnerText,
                             DocumentTitle = data[2].InnerText,
-                            FileLink = new Uri(SECBaseLink + data[2].FirstChild.Attributes["href"].Value),
-                            FileType = data[3].InnerText,
-                            Size = Convert.ToInt32(string.IsNullOrEmpty(data[4].InnerText) ? "0" : data[4].InnerText)
-                        };;
+                            FileLink = new Uri(SECBaseLink + data[2].FirstChild.Attributes["href"].Value)
+                        };
                     } catch (Exception e)
                     {
                         // for debugging
                     }
+                    try
+                    {
+                        link.FileType = data[3].InnerText;
+                        link.Size = Convert.ToInt32(string.IsNullOrEmpty(data[4].InnerText) ? "0" : data[4].InnerText);
+                    }
+                    catch { }
                     if (link != null)
                         links.Add(link);
                 }

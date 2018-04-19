@@ -59,6 +59,9 @@ namespace SEPubViewer.ViewModels
             get { return selectedDoc; }
             set
             {
+                if (value == null)
+                    return; // weird, currently inexplainable bug causes it to send null on every other selection
+
                 selectedDoc = value;
                 OnPropertyChanged("SelectedDoc");
             }
@@ -113,7 +116,7 @@ namespace SEPubViewer.ViewModels
                     var maxVal = dets.HTMLLinks.Max(l => l.Size);
                     SelectedDoc = dets.HTMLLinks.Where(l => l.Size == maxVal).FirstOrDefault();
                 }
-            });
+            }).ConfigureAwait(false);
         }
     }
 }

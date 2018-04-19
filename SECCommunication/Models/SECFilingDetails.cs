@@ -11,9 +11,8 @@ namespace SECCommunication.Models
         public List<SECSingleFileLink> AllLinks { get; set; }
         public List<SECSingleFileLink> HTMLLinks {
             get {
-                return AllLinks.Where(l => l.FileLink.AbsoluteUri.EndsWith(".htm")
-                    || l.FileLink.AbsoluteUri.EndsWith(".html")
-                    || l.FileLink.AbsoluteUri.EndsWith(".txt")).ToList();
+                return AllLinks.Where(l => l.DocumentTitle.EndsWith(".htm")
+                    || l.DocumentTitle.EndsWith(".html")).ToList();
             }
         }
         public DateTime TimeAccepted { get; set; }

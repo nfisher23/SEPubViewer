@@ -45,15 +45,15 @@
                     <i:EventTrigger EventName="SelectionChanged" 
                                     SourceName="listBoxTopLevelTickers">
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="GetDocsInReport" />
-
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
             <ListBox Name="listBoxDocsInReport" ItemsSource="{Binding DocLinks}"
-                     SelectedItem="{Binding SelectedDoc}"
-                     DisplayMemberPath="DocumentTitle" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                     SelectedItem="{Binding SelectedDoc,Mode=TwoWay}"
+                     DisplayMemberPath="Description" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                      Height="117"
-                     Margin="0" Width="176"/>
+                     Margin="0" Width="176">
+            </ListBox>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"
                        TextAlignment="Center" FontSize="18"
                        Text="Filings" VerticalAlignment="Top" Height="26" Width="176"/>
@@ -61,5 +61,9 @@
                 TextAlignment="Center" FontSize="18"
                 Text="Docs In Selected" VerticalAlignment="Bottom" Height="26" Width="176" Margin="0,0,0,117"/>
         </Grid>
+        <Frame Grid.Column="1" Grid.RowSpan="2" Source="{Binding SelectedDoc.FileLink,Mode=TwoWay}"
+               Margin="7">
+            
+        </Frame>
     </Grid>
 </Page>
