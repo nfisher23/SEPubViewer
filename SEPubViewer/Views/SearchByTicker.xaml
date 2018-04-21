@@ -9,11 +9,12 @@
       xmlns:vm="clr-namespace:SEPubViewer.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Background="{StaticResource appBackground}"
       Title="SearchByTicker">
     <Page.DataContext>
         <vm:SearchByTickerViewModel />
     </Page.DataContext>
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition />
@@ -22,12 +23,12 @@
             <ColumnDefinition Width="186" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" BorderThickness="1">
-            <Grid Grid.Row="0" Grid.Column="0" Margin="5">
+        <Border Style="{StaticResource borderRounded}">
+            <Grid Grid.Row="0" Grid.Column="0" Margin="8">
                 <Label Margin="0,0,83,23" FontSize="12">Ticker or CIK:</Label>
                 <TextBox HorizontalAlignment="Left" Height="23"
-                 TextWrapping="Wrap" Text="{Binding Ticker}" VerticalAlignment="Top" Width="78" Margin="96,0,0,0"/>
-                <Button Margin="96,25,0,0" Name="btnGetFilings">
+                 TextWrapping="Wrap" Text="{Binding Ticker}" VerticalAlignment="Top" Width="78" Margin="89,0,0,0"/>
+                <Button Margin="89,25,5,0" Name="btnGetFilings">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click" SourceName="btnGetFilings">
                             <ei:CallMethodAction TargetObject="{Binding}" MethodName="GetFilings" />
@@ -37,10 +38,10 @@
                 </Button>
             </Grid>
         </Border>
-        <Grid Grid.Row="1" Grid.Column="0" Margin="5">
+        <Grid Grid.Row="1" Grid.Column="0" Margin="0,8,0,0">
             <ListBox Name="listBoxTopLevelTickers" ItemsSource="{Binding Filings}"
                      DisplayMemberPath="DisplayEssentials" SelectedItem="{Binding SelectedFiling}"
-                     Margin="0,25,0,148">
+                     Margin="8,25,8,148" Style="{StaticResource listBoxStyle}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged" 
                                     SourceName="listBoxTopLevelTickers">
@@ -48,22 +49,33 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
-            <ListBox Name="listBoxDocsInReport" ItemsSource="{Binding DocLinks}"
+            <Border Style="{StaticResource borderRounded}" Margin="-3,-3,-3,0">
+
+                <ListBox Name="listBoxDocsInReport" ItemsSource="{Binding DocLinks}"
                      SelectedItem="{Binding SelectedDoc,Mode=TwoWay}"
                      DisplayMemberPath="Description" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                     Height="117"
-                     Margin="0" Width="176">
-            </ListBox>
+                     Height="111" Style="{StaticResource listBoxStyle}"
+                     Margin="8,0,0,8" Width="172">
+                </ListBox>
+            </Border>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"
-                       TextAlignment="Center" FontSize="18"
+                       TextAlignment="Center"  Style="{StaticResource textBlockStyle}"
                        Text="Filings" VerticalAlignment="Top" Height="26" Width="176"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"
-                TextAlignment="Center" FontSize="18"
-                Text="Docs In Selected" VerticalAlignment="Bottom" Height="26" Width="176" Margin="0,0,0,117"/>
+                TextAlignment="Center" Style="{StaticResource textBlockStyle}"
+                Text="Docs" VerticalAlignment="Bottom" Height="26" Width="176" Margin="2,0,0,117"/>
         </Grid>
-        <Frame Grid.Column="1" Grid.RowSpan="2" Source="{Binding SelectedDoc.FileLink,Mode=TwoWay}"
+        <Grid Grid.Row="0" Grid.Column="1">
+            <ComboBox Style="{StaticResource comboBoxStyle}" Margin="540,28.5,0,10">
+                
+            </ComboBox>
+        </Grid>
+        <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource borderRounded}"
+                Margin="5,5,0,0">
+        <Frame Grid.Column="1" Grid.Row="1" Source="{Binding SelectedDoc.FileLink,Mode=TwoWay}"
                Margin="7">
-            
+
         </Frame>
+        </Border>
     </Grid>
 </Page>

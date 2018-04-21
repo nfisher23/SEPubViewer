@@ -8,9 +8,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SEPubViewer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A Windows Desktop App To View sec.gov related material")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("nickolasfisher.com")]
 [assembly: AssemblyProduct("SEPubViewer")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]

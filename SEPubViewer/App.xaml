@@ -5,8 +5,27 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <LinearGradientBrush x:Key="appBackground">
-            <GradientStop Color="#9D96AA" Offset="0" />
-            <GradientStop Color="#CBC7D1" Offset="1" />
+            <GradientStop Color="#FFF3FCFF" Offset="0" />
+            <GradientStop Color="#FFF3FCFA" Offset="1" />
         </LinearGradientBrush>
+        <Style x:Key="listBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="#AACEEDFF" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style x:Key="textBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontStyle" Value="Normal" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+        <Style x:Key="borderRounded" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#FF162B6C" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Margin" Value="-3" />
+        </Style>
+        <Style x:Key="comboBoxStyle" TargetType="ComboBox">
+            
+        </Style>
+        
     </Application.Resources>
 </Application>
