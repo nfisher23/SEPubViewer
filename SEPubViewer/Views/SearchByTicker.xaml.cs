@@ -24,7 +24,6 @@ namespace SEPubViewer.Views
         public SearchByTicker()
         {
             InitializeComponent();
-            
         }
     }
 }

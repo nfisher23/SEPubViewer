@@ -87,7 +87,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
-
+            <TextBlock Margin="5,0,306,54" Foreground="Red" Text="{Binding ErrorMessage}"></TextBlock>
         </Grid>
         <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource borderRounded}"
                 Margin="5,5,0,0">

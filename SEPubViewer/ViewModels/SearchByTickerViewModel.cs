@@ -81,6 +81,7 @@ namespace SEPubViewer.ViewModels
             }
         }
 
+        // ick
         private string[] recentTickers;
         public List<string> RecentTickers
         {
@@ -89,6 +90,17 @@ namespace SEPubViewer.ViewModels
             {
                 recentTickers = value.ToArray();
                 OnPropertyChanged("RecentTickers");
+            }
+        }
+
+        private string errorMessage;
+        public string ErrorMessage
+        {
+            get { return errorMessage; }
+            set
+            {
+                errorMessage = value;
+                OnPropertyChanged("ErrorMessage");
             }
         }
 
@@ -107,16 +119,24 @@ namespace SEPubViewer.ViewModels
 
         public async void GetFilings()
         {
+            ErrorMessage = "";
             await Task.Factory.StartNew(() =>
             {
-                QueryBuilder query = new QueryBuilder();
-                query.AddQuery("action", "getcompany");
-                query.AddQuery("CIK", Ticker);
+                try
+                {
+                    QueryBuilder query = new QueryBuilder();
+                    query.AddQuery("action", "getcompany");
+                    query.AddQuery("CIK", Ticker);
 
-                var page = edgarRetrieval.GetTickerLandingPage(query);
-                Filings = page.Filings;
+                    var page = edgarRetrieval.GetTickerLandingPage(query);
+                    Filings = page.Filings;
+                    OnTickerRetrieval();
+                }
+                catch (Exception e)
+                {
+                    ErrorMessage = $"Error: Could not find {Ticker}";
+                }
             }).ConfigureAwait(false);
-            OnTickerRetrieval();
         }
 
         public async void GetDocsInReport()
