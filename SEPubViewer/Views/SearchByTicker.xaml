@@ -41,7 +41,7 @@
         <Grid Grid.Row="1" Grid.Column="0" Margin="0,8,0,0">
             <ListBox Name="listBoxTopLevelTickers" ItemsSource="{Binding Filings}"
                      DisplayMemberPath="DisplayEssentials" SelectedItem="{Binding SelectedFiling}"
-                     Margin="8,25,8,194" Style="{StaticResource listBoxStyle}">
+                     Margin="8,25,8,222" Style="{StaticResource listBoxStyle}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged" 
                                     SourceName="listBoxTopLevelTickers">
@@ -49,8 +49,18 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
+            <Border Style="{StaticResource borderRounded}">
+                <Button Name="btnLoadMore" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    Margin="10,0,0,193" Style="{StaticResource btnDefaultStyle}" Height="26" Width="83">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click" SourceName="btnLoadMore">
+                            <ei:CallMethodAction TargetObject="{Binding}" MethodName="LoadMoreFilings" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    Load More
+                </Button>
+            </Border>
             <Border Style="{StaticResource borderRounded}" Margin="-3,-3,-3,0">
-
                 <ListBox Name="listBoxDocsInReport" ItemsSource="{Binding DocLinks}"
                      SelectedItem="{Binding SelectedDoc,Mode=TwoWay}"
                      HorizontalAlignment="Left" VerticalAlignment="Bottom"

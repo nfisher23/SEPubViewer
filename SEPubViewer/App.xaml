@@ -23,7 +23,10 @@
             <Setter Property="CornerRadius" Value="8" />
             <Setter Property="Margin" Value="-3" />
         </Style>
-        <Style x:Key="comboBoxStyle" TargetType="ComboBox">
+        <Style x:Key="btnDefaultStyle" TargetType="Button">
+            <Setter Property="Background" Value="#7894E0"/>
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="#080E1E" />
             
         </Style>
         

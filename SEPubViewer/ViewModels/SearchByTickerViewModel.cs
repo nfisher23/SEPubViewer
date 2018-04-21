@@ -17,7 +17,7 @@ namespace SEPubViewer.ViewModels
 {
     public class SearchByTickerViewModel : Notifier
     {
-        #region Properties
+        #region Exposed Properties
         private string ticker;
 
         public string Ticker
@@ -104,9 +104,11 @@ namespace SEPubViewer.ViewModels
             }
         }
 
-        private IEdgarRetrieval edgarRetrieval;
-        
+
         #endregion
+
+        private IEdgarRetrieval edgarRetrieval;
+        private TickerLandingPage LastPage;
 
         public SearchByTickerViewModel() : this (DIResolver.ResolveEdgar())
         { }
@@ -130,6 +132,8 @@ namespace SEPubViewer.ViewModels
 
                     var page = edgarRetrieval.GetTickerLandingPage(query);
                     Filings = page.Filings;
+
+                    LastPage = page;
                     OnTickerRetrieval();
                 }
                 catch (Exception e)
@@ -137,6 +141,29 @@ namespace SEPubViewer.ViewModels
                     ErrorMessage = $"Error: Could not find {Ticker}";
                 }
             }).ConfigureAwait(false);
+        }
+
+        public async void LoadMoreFilings()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    QueryBuilder query = new QueryBuilder();
+                    query.AddQuery("action", "getcompany");
+                    query.AddQuery("CIK", Ticker);
+                    query.AddQuery("dateb", this.LastPage.LastDateOnPage.ToString("yyyyMMdd"));
+
+                    var page = edgarRetrieval.GetTickerLandingPage(query);
+                    AddToFilings(page);
+
+                    LastPage = page;
+                }
+                catch (Exception e)
+                {
+                    ErrorMessage = "TBD on load more failure";
+                }
+            });
         }
 
         public async void GetDocsInReport()
@@ -172,6 +199,18 @@ namespace SEPubViewer.ViewModels
             }
             RecentTickers = l.ToList();
         }
+
+        private void AddToFilings(TickerLandingPage page)
+        {
+            // still ugly, but we'll avoid the boilerplate code and take on some technical debt 
+            // for a small project like this.
+            var newF = new List<TopLevelFiling>();
+            newF.AddRange(Filings);
+            newF.AddRange(page.Filings);
+            Filings = newF;
+        }
+
+
 
     }
 }
