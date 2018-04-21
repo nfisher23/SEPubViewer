@@ -42,7 +42,8 @@ namespace SECCommunication.Models
 
         public void RemoveQueryByKey(string key)
         {
-            KeyValuePairs.Remove(key);
+            if (KeyValuePairs.ContainsKey(key))
+                KeyValuePairs.Remove(key);
         }
 
         private string ConstructReqString()

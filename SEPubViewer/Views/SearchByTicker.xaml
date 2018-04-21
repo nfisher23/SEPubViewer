@@ -16,7 +16,7 @@
     </Page.DataContext>
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="70" />
+            <RowDefinition Height="80" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -86,6 +86,13 @@
                 Text="Docs" VerticalAlignment="Bottom" Height="26" Width="176" Margin="8,0,0,163"/>
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1">
+            <Border BorderBrush="Blue" BorderThickness="1" Margin="0,0,141,21">
+                <Grid>
+
+                </Grid>
+            </Border>
+            <TextBlock Style="{StaticResource textBlockStyle}" TextWrapping="Wrap"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Text="Query Options" Margin="4,0,0,0" Height="49" />
             <TextBlock Margin="0,0,100,54" HorizontalAlignment="Right" VerticalAlignment="Bottom">Recent</TextBlock>
             <ListBox Style="{StaticResource listBoxStyle}" ItemsSource="{Binding RecentTickers}"
                      SelectedItem="{Binding Ticker, Mode=OneWayToSource}"
@@ -97,7 +104,13 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
-            <TextBlock Margin="5,0,306,54" Foreground="Red" Text="{Binding ErrorMessage}"></TextBlock>
+            <TextBlock Margin="7,54,311,0" Foreground="Red" Text="{Binding ErrorMessage}"></TextBlock>
+            <TextBlock Margin="79,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">Filing Type:</TextBlock>
+            <TextBlock Margin="79,29,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">Date Before:</TextBlock>
+            <DatePicker DisplayDate="{Binding QueryVM.DateBefore}" SelectedDate="{Binding QueryVM.DateBefore, Mode=TwoWay}"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="149,25,0,0" Width="109"></DatePicker>
+            <TextBox Name="txtBoxFilingType" Text="{Binding QueryVM.FilingType, Mode=TwoWay}"
+                     HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="48" Margin="149,3,0,0"></TextBox>
         </Grid>
         <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource borderRounded}"
                 Margin="5,5,0,0">

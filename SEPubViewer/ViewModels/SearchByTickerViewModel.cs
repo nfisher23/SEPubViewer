@@ -104,7 +104,16 @@ namespace SEPubViewer.ViewModels
             }
         }
 
-
+        private QueryViewModel queryVM;
+        public QueryViewModel QueryVM
+        {
+            get { return queryVM; }
+            set
+            {
+                queryVM = value;
+                OnPropertyChanged("QueryVM");
+            }
+        }
         #endregion
 
         private IEdgarRetrieval edgarRetrieval;
@@ -116,6 +125,7 @@ namespace SEPubViewer.ViewModels
         public SearchByTickerViewModel(IEdgarRetrieval retrieval)
         {
             RecentTickers = new List<string>();
+            queryVM = new QueryViewModel();
             edgarRetrieval = retrieval;
         }
 
@@ -126,9 +136,7 @@ namespace SEPubViewer.ViewModels
             {
                 try
                 {
-                    QueryBuilder query = new QueryBuilder();
-                    query.AddQuery("action", "getcompany");
-                    query.AddQuery("CIK", Ticker);
+                    var query = BuildBaseQuery();
 
                     var page = edgarRetrieval.GetTickerLandingPage(query);
                     Filings = page.Filings;
@@ -149,10 +157,9 @@ namespace SEPubViewer.ViewModels
             {
                 try
                 {
-                    QueryBuilder query = new QueryBuilder();
-                    query.AddQuery("action", "getcompany");
-                    query.AddQuery("CIK", Ticker);
-                    query.AddQuery("dateb", this.LastPage.LastDateOnPage.ToString("yyyyMMdd"));
+                    var query = BuildBaseQuery();
+                    query.RemoveQueryByKey("dateb");
+                    query.AddQuery("dateb", this.LastPage.LastDateOnPage.AddDays(-1).ToString("yyyyMMdd"));
 
                     var page = edgarRetrieval.GetTickerLandingPage(query);
                     AddToFilings(page);
@@ -161,7 +168,7 @@ namespace SEPubViewer.ViewModels
                 }
                 catch (Exception e)
                 {
-                    ErrorMessage = "TBD on load more failure";
+                    ErrorMessage = "Failed to load more documents";
                 }
             });
         }
@@ -210,7 +217,44 @@ namespace SEPubViewer.ViewModels
             Filings = newF;
         }
 
+        private QueryBuilder BuildBaseQuery()
+        {
+            QueryBuilder query = new QueryBuilder();
+            query.AddQuery("action", "getcompany");
+            query.AddQuery("CIK", Ticker);
+            if (!string.IsNullOrEmpty(QueryVM.FilingType))
+                query.AddQuery("type", queryVM.FilingType);
 
+            if (QueryVM.DateBefore > new DateTime())
+                query.AddQuery("dateb", QueryVM.DateBefore.ToString("yyyyMMdd"));
 
+            return query;
+        }
+
+    }
+
+    public class QueryViewModel : Notifier
+    {
+        private string filingType;
+        public string FilingType
+        {
+            get { return filingType; }
+            set
+            {
+                filingType = value;
+                OnPropertyChanged("FilingType");
+            }
+        }
+
+        private DateTime dateBefore = DateTime.Now;
+        public DateTime DateBefore
+        {
+            get { return dateBefore; }
+            set
+            {
+                dateBefore = value;
+                OnPropertyChanged("DateBefore");
+            }
+        }
     }
 }
