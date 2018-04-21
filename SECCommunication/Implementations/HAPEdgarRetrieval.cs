@@ -20,6 +20,10 @@ namespace SECCommunication.Implementations
             TickerLandingPage page = new TickerLandingPage { Query = query };
             var doc = Web.Load(query.HTTPGetRequest);
             page.Filings = GetFilingsFromLandingPage(doc);
+
+            if (page.Filings == null)
+                return null;
+
             page.LastDateOnPage = page.Filings.Last().FilingDate;
 
             return page;

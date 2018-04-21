@@ -6,6 +6,8 @@ using SEPubViewer.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -79,9 +81,19 @@ namespace SEPubViewer.ViewModels
             }
         }
 
+        private string[] recentTickers;
+        public List<string> RecentTickers
+        {
+            get { return recentTickers.ToList(); }
+            set
+            {
+                recentTickers = value.ToArray();
+                OnPropertyChanged("RecentTickers");
+            }
+        }
+
         private IEdgarRetrieval edgarRetrieval;
         
-
         #endregion
 
         public SearchByTickerViewModel() : this (DIResolver.ResolveEdgar())
@@ -89,6 +101,7 @@ namespace SEPubViewer.ViewModels
 
         public SearchByTickerViewModel(IEdgarRetrieval retrieval)
         {
+            RecentTickers = new List<string>();
             edgarRetrieval = retrieval;
         }
 
@@ -102,13 +115,17 @@ namespace SEPubViewer.ViewModels
 
                 var page = edgarRetrieval.GetTickerLandingPage(query);
                 Filings = page.Filings;
-            });
+            }).ConfigureAwait(false);
+            OnTickerRetrieval();
         }
 
         public async void GetDocsInReport()
         {
             await Task.Factory.StartNew(() =>
             {
+                if (selectedFiling == null)
+                    return;
+
                 var dets = edgarRetrieval.GetSubmissionDetails(SelectedFiling);
                 DocLinks = dets.HTMLLinks;
                 if (DocLinks.Count > 0)
@@ -116,7 +133,25 @@ namespace SEPubViewer.ViewModels
                     var maxVal = dets.HTMLLinks.Max(l => l.Size);
                     SelectedDoc = dets.HTMLLinks.Where(l => l.Size == maxVal).FirstOrDefault();
                 }
+                
             }).ConfigureAwait(false);
         }
+
+        private void OnTickerRetrieval()
+        {
+            // todo: implement a collectionchanged interface so this isn't so ugly
+            var l = recentTickers.Take(10).ToList();
+            if (!l.Contains(Ticker))
+            {
+                l.Insert(0,Ticker);
+            }
+            else
+            {
+                l.Remove(Ticker);
+                l.Insert(0, Ticker);
+            }
+            RecentTickers = l.ToList();
+        }
+
     }
 }
