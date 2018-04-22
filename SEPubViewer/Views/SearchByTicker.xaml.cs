@@ -27,5 +27,10 @@ namespace SEPubViewer.Views
             SearchByTickerViewModel m = (SearchByTickerViewModel)this.DataContext;
             
         }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }
