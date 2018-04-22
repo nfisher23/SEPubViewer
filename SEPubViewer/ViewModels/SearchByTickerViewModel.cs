@@ -3,11 +3,13 @@ using SECCommunication.Interfaces;
 using SECCommunication.Models;
 using SEPubViewer.Infrastructure;
 using SEPubViewer.Models;
+using Syroot.Windows.IO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -104,6 +106,17 @@ namespace SEPubViewer.ViewModels
             }
         }
 
+        private string systemMessage;
+        public string SystemMessage
+        {
+            get { return systemMessage; }
+            set
+            {
+                systemMessage = value;
+                OnPropertyChanged("SystemMessage");
+            }
+        }
+
         private QueryViewModel queryVM;
         public QueryViewModel QueryVM
         {
@@ -132,6 +145,7 @@ namespace SEPubViewer.ViewModels
         public async void GetFilings()
         {
             ErrorMessage = "";
+            SystemMessage = "Working...";
             await Task.Factory.StartNew(() =>
             {
                 try
@@ -143,16 +157,19 @@ namespace SEPubViewer.ViewModels
 
                     LastPage = page;
                     OnTickerRetrieval();
+                    SystemMessage = "Retrieved!";
                 }
                 catch (Exception e)
                 {
                     ErrorMessage = $"Error: Could not find {Ticker}";
+                    SystemMessage = "";
                 }
             }).ConfigureAwait(false);
         }
 
         public async void LoadMoreFilings()
         {
+            SystemMessage = "Loading...";
             await Task.Factory.StartNew(() =>
             {
                 try
@@ -165,10 +182,12 @@ namespace SEPubViewer.ViewModels
                     AddToFilings(page);
 
                     LastPage = page;
+                    SystemMessage = "Loaded!";
                 }
                 catch (Exception e)
                 {
                     ErrorMessage = "Failed to load more documents";
+                    SystemMessage = "";
                 }
             });
         }
@@ -189,6 +208,46 @@ namespace SEPubViewer.ViewModels
                 }
                 
             }).ConfigureAwait(false);
+        }
+
+        public async void DownloadDocument()
+        {
+            SystemMessage = "Downloading...";
+
+            await Task.Factory.StartNew(() =>
+            {
+                KnownFolder k = new KnownFolder(KnownFolderType.Downloads);
+                DownloadAndSave(SelectedDoc, k.Path);
+                SystemMessage = "Downloaded!";
+            });
+        }
+
+        public async void DownloadAllDocuments()
+        {
+            SystemMessage = "Downloading...";
+
+            await Task.Factory.StartNew(() =>
+            {
+                KnownFolder k = new KnownFolder(KnownFolderType.Downloads);
+                string pathToDir = $"{k.Path}\\{Ticker}_({SelectedFiling.FilingDate.Month}-" +
+                    $"{SelectedFiling.FilingDate.Day})_{SelectedFiling.FilingName}";
+                Directory.CreateDirectory(pathToDir);
+
+                foreach (var page in DocLinks)
+                {
+                    DownloadAndSave(page, pathToDir);
+                }
+
+                SystemMessage = "Downloaded!";
+            });
+        }
+
+        private void DownloadAndSave(SECSingleFileLink link, string basePath)
+        {
+            var html = new System.Net.WebClient().DownloadString(link.FileLink);
+            var description = string.IsNullOrEmpty(link.Description) ? link.DocumentTitle : link.Description;
+            string title = Ticker.ToUpper() + "_" + description + ".html";
+            File.WriteAllText(basePath + "\\" + title, html);
         }
 
         private void OnTickerRetrieval()

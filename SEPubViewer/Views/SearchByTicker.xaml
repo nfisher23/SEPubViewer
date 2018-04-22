@@ -8,7 +8,9 @@
       xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
       xmlns:vm="clr-namespace:SEPubViewer.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="900"
+      d:DesignHeight="600" d:DesignWidth="850"
+      MinHeight="450"
+      MinWidth="650"
       Background="{StaticResource appBackground}"
       Title="SearchByTicker">
     <Page.DataContext>
@@ -25,7 +27,7 @@
         </Grid.ColumnDefinitions>
         <Border Style="{StaticResource borderRounded}" Margin="-3,-3,1,0" Grid.RowSpan="1">
             <Grid Grid.Row="0" Grid.Column="0" Margin="8">
-                <Label Margin="0,-2,83,25" FontSize="12">Ticker or CIK:</Label>
+                <Label Margin="0,-2,83,35" FontSize="12">Ticker or CIK:</Label>
                 <TextBox HorizontalAlignment="Left" Height="23"
                  TextWrapping="Wrap" Text="{Binding Ticker}" VerticalAlignment="Top" Width="78" Margin="115,0,0,0"/>
                 <Button Margin="115,28,5,-3" Name="btnGetFilings">
@@ -36,6 +38,8 @@
                     </i:Interaction.Triggers>
                     Get Filings
                 </Button>
+                <TextBlock Margin="0,33,83,-3" FontSize="15" Foreground="Green"
+                           Text="{Binding SystemMessage}"/>
             </Grid>
         </Border>
         <Grid Grid.Row="1" Grid.Column="0" Margin="0,8,0,0">
@@ -87,9 +91,6 @@
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1">
             <Border BorderBrush="Blue" BorderThickness="1" Margin="0,0,141,21">
-                <Grid>
-
-                </Grid>
             </Border>
             <TextBlock Style="{StaticResource textBlockStyle}" TextWrapping="Wrap"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Text="Query Options" Margin="4,0,0,0" Height="49" />
@@ -104,13 +105,29 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
-            <TextBlock Margin="7,54,311,0" Foreground="Red" Text="{Binding ErrorMessage}"></TextBlock>
+            <TextBlock Margin="7,59,384,0" Foreground="Red" Text="{Binding ErrorMessage}"></TextBlock>
+            <Button Margin="230,59,0,0" Foreground="Blue" Name="btnDownloadDocument" HorizontalAlignment="Left" Width="92">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click" SourceName="btnDownloadDocument">
+                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="DownloadDocument" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                Download Doc
+            </Button>
+            <Button Margin="327,59,175,0" Foreground="Blue" HorizontalAlignment="Left" Name="btnDownloadAllDocs">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click" SourceName="btnDownloadAllDocs">
+                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="DownloadAllDocuments" /> 
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                Download All Docs
+            </Button>
             <TextBlock Margin="79,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">Filing Type:</TextBlock>
             <TextBlock Margin="79,29,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">Date Before:</TextBlock>
             <DatePicker DisplayDate="{Binding QueryVM.DateBefore}" SelectedDate="{Binding QueryVM.DateBefore, Mode=TwoWay}"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="149,25,0,0" Width="109"></DatePicker>
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="149,25,0,0" Width="95"></DatePicker>
             <TextBox Name="txtBoxFilingType" Text="{Binding QueryVM.FilingType, Mode=TwoWay}"
-                     HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="48" Margin="149,3,0,0"></TextBox>
+                     HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="59" Margin="149,3,0,0"></TextBox>
         </Grid>
         <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource borderRounded}"
                 Margin="5,5,0,0">

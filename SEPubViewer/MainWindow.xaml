@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SEPubViewer"
         mc:Ignorable="d" Background="{StaticResource appBackground}"
-        Title="SEPubViewer" Height="650" Width="900">
+        Title="SEPubViewer" Height="650" Width="900" MinHeight="485" MinWidth="680">
     <Grid Margin="4">
         <Frame Source="/Views/SearchByTicker.xaml" />
     </Grid>
